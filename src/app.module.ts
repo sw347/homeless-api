@@ -5,6 +5,7 @@ import { CoopModule } from './coop/coop.module';
 import { WorkPostModule } from './work-post/work-post.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     CoopModule,
     WorkPostModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
