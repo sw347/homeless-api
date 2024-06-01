@@ -7,11 +7,6 @@ import { UpdateCoopDto } from './dto/update-coop.dto';
 export class CoopController {
   constructor(private readonly coopService: CoopService) {}
 
-  @Post()
-  create(@Body() createCoopDto: CreateCoopDto) {
-    return this.coopService.create(createCoopDto);
-  }
-
   @Get()
   findAll() {
     return this.coopService.findAll();
@@ -19,16 +14,6 @@ export class CoopController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.coopService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoopDto: UpdateCoopDto) {
-    return this.coopService.update(+id, updateCoopDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.coopService.remove(+id);
+    return this.coopService.findOne(id);
   }
 }
