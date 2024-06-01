@@ -10,23 +10,12 @@ export class CoopService {
   constructor(
     @InjectRepository(Coop) private coopRepository: Repository<Coop>
   ) {}
-  create(createCoopDto: CreateCoopDto) {
-    return 'This action adds a new coop';
-  }
-
   findAll() {
-    return `This action returns all coop`;
+    return this.coopRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} coop`;
+  findOne(id: string) {
+    return this.coopRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateCoopDto: UpdateCoopDto) {
-    return `This action updates a #${id} coop`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} coop`;
-  }
 }
