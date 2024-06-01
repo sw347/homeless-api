@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Coop {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -9,23 +9,23 @@ export class Coop {
   name: string;
 
   @Column()
-  location: string;
+  email: string;
 
   @Column()
-  realLocation?: string;
-
-  @Column('text')
-  description: string;
+  organization: string;
 
   @Column()
   phone: string;
 
-  @Column()
-  baseUrl: string;
+  @Column({type: 'timestamp'})
+  birth: Date;
 
   @Column()
-  mainImage: string;
+  role: string;
+
+  @Column()
+  idle: string;
 
   @Column('simple-array')
-  subImages: string[];
+  interest: string[];
 }
