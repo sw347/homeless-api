@@ -11,8 +11,11 @@ export class Coop {
   @Column()
   location: string;
 
-  @Column({ nullable: true })
-  realLocation?: string;
+  @Column({ type: 'double', nullable: true })
+  lat?: number;
+
+  @Column({ type: 'double', nullable: true })
+  lng?: number;
 
   @Column({ type: 'text', nullable: true })
   description?: string;

@@ -27,7 +27,13 @@ export class TaskService {
       console.log('not saved!!');
       return await this.everyCoop();
     }
-    await this.coopRepository.save(data);
+    await this.coopRepository.save(
+      data.map((val) => {
+        const { realLocation: { lat, lng } = { lat: 0, lng: 0 }, ...other } =
+          val;
+        return { lat, lng, ...other };
+      }),
+    );
     console.log('coop saved');
   }
 

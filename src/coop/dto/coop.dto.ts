@@ -1,4 +1,3 @@
-import { IsUrl } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
@@ -13,7 +12,7 @@ export class CoopDto {
   location: string;
 
   @Expose()
-  realLocation?: string;
+  realLocation?: LatLngDto;
 
   @Expose()
   description?: string;
@@ -29,4 +28,13 @@ export class CoopDto {
 
   @Expose()
   subImages?: string[];
+}
+
+@Exclude()
+export class LatLngDto {
+  @Expose()
+  lat: number;
+
+  @Expose()
+  lng: number;
 }
