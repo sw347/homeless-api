@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class WorkPost {
@@ -14,10 +14,10 @@ export class WorkPost {
   @Column()
   webView: string;
 
-  @Column({type: "timestamptz"})
+  @Column({ type: 'timestamp' })
   addDate: Date;
 
-  @Column({type: "timestamptz"})
+  @Column({ type: 'timestamp' })
   endDate: Date;
 
   @Column()

@@ -14,7 +14,7 @@ export class Coop {
   @Column()
   realLocation?: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
   @Column()
@@ -26,10 +26,9 @@ export class Coop {
   @Column()
   mainImage: string;
 
-  @Column()
+  @Column('simple-array')
   subImages: string[];
 }
-
 
 // name: string
 // location: string
