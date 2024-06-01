@@ -1,5 +1,5 @@
-import { IsUrl } from "class-validator";
-import { Exclude, Expose } from "class-transformer";
+import { IsUrl } from 'class-validator';
+import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
 export class CoopDto {
@@ -16,7 +16,7 @@ export class CoopDto {
   realLocation?: string;
 
   @Expose()
-  description: string;
+  description?: string;
 
   @Expose()
   phone: string;
@@ -28,6 +28,5 @@ export class CoopDto {
   mainImage: string;
 
   @Expose()
-  subImages: string[];
-
+  subImages?: string[];
 }

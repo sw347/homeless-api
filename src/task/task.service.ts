@@ -17,27 +17,43 @@ export class TaskService {
     private readonly httpService: HttpService,
   ) {}
 
-  @Cron('0 30 18 * * *')
+  @Cron('30 31 2 * * *')
   async everyCoop(): Promise<void> {
-    const { data } = await this.getCoopAll();
+    console.log('coop save start');
+    const coops = await this.getCoopAll();
+    const { data, status } = coops;
+    console.log(data, status);
+    if (status > 302) {
+      console.log('not saved!!');
+      return await this.everyCoop();
+    }
     await this.coopRepository.save(data);
+    console.log('coop saved');
   }
 
-  @Cron('0 30 18 * * *')
+  @Cron('40 29 2 * * *')
   async everyWorkPost(): Promise<void> {
-    const { data } = await this.getWorkPostPublic();
+    console.log('work-post save start');
+    const work_posts = await this.getWorkPostPublic();
+    const { data, status } = work_posts;
+    console.log(data, status);
+    if (status > 302) {
+      console.log('work-post not saved!!');
+      return await this.everyWorkPost();
+    }
     await this.workPostRepository.save(data);
+    console.log('work-post saved');
   }
 
   getCoopAll() {
     return this.httpService.axiosRef.get<CoopDto[]>(
-      'https://222.110.147.50:8725/coop/all',
+      'http://222.110.147.50:8725/coop/all',
     );
   }
 
   getWorkPostPublic() {
     return this.httpService.axiosRef.get<WorkPostDto[]>(
-      'https://222.110.147.50:8725/work/public',
+      'http://222.110.147.50:8725/work/public',
     );
   }
 }

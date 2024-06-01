@@ -25,7 +25,7 @@ import { TaskModule } from './task/task.module';
       database: process.env.DATABASE_DATABASE,
       entities: [__dirname + '../**/*.entity.{ts,js}'],
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     ScheduleModule.forRoot(),

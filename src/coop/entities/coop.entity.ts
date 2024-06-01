@@ -11,19 +11,19 @@ export class Coop {
   @Column()
   location: string;
 
-  @Column()
+  @Column({ nullable: true })
   realLocation?: string;
 
-  @Column('text')
-  description: string;
+  @Column({ type: 'text', nullable: true })
+  description?: string;
 
   @Column()
   phone: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
   baseUrl: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
   mainImage: string;
 
   @Column('simple-array')

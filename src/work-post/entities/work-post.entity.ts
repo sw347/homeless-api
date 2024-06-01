@@ -11,14 +11,14 @@ export class WorkPost {
   @Column()
   state: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
   webView: string;
 
   @Column({ type: 'timestamp' })
   addDate: Date;
 
-  @Column({ type: 'timestamp' })
-  endDate: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  endDate?: Date;
 
   @Column()
   companyName: string;
@@ -27,10 +27,10 @@ export class WorkPost {
   recruitment?: string;
 
   @Column()
-  companyLocation: string;
+  companyLocation?: string;
 
   @Column()
-  companyJobType: string;
+  companyJobType?: string;
 
   @Column()
   findJobType: string;
@@ -50,6 +50,6 @@ export class WorkPost {
   @Column()
   workingLocation: string;
 
-  @Column('text')
-  otherInfo: string;
+  @Column('text', { nullable: true })
+  otherInfo?: string;
 }
