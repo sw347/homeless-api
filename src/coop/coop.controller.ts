@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Param, HttpCode } from '@nestjs/common';
 import { CoopService } from './coop.service';
-import { CreateCoopDto } from './dto/create-coop.dto';
-import { UpdateCoopDto } from './dto/update-coop.dto';
+import { TaskService } from '../task/task.service';
 
 @Controller('coop')
 export class CoopController {
-  constructor(private readonly coopService: CoopService) {}
+  constructor(
+    private readonly coopService: CoopService,
+    private readonly taskService: TaskService,
+  ) {}
 
   @Get()
   findAll() {
@@ -15,5 +17,11 @@ export class CoopController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.coopService.findOne(id);
+  }
+
+  @Post('crawler')
+  @HttpCode(204)
+  forceRun() {
+    this.taskService.everyCoop();
   }
 }

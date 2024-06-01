@@ -8,5 +8,6 @@ import { WorkPost } from '../work-post/entities/work-post.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Coop, WorkPost]), HttpModule],
   providers: [TaskService],
+  exports: [TaskService],
 })
 export class TaskModule {}
