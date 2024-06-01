@@ -50,6 +50,6 @@ export class WorkPost {
   @Column()
   workingLocation: string;
 
-  @Column()
+  @Column('text')
   otherInfo: string;
 }

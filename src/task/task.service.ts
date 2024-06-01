@@ -18,15 +18,15 @@ export class TaskService {
   ) {}
 
   @Cron('0 30 18 * * *')
-  async everyCoop() {
+  async everyCoop(): Promise<void> {
     const { data } = await this.getCoopAll();
-    data.forEach((coop) => {});
+    await this.coopRepository.save(data);
   }
 
   @Cron('0 30 18 * * *')
-  async everyWorkPost() {
+  async everyWorkPost(): Promise<void> {
     const { data } = await this.getWorkPostPublic();
-    data.forEach((workPost) => {});
+    await this.workPostRepository.save(data);
   }
 
   getCoopAll() {
