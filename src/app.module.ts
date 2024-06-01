@@ -6,6 +6,9 @@ import { WorkPostModule } from './work-post/work-post.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { HttpModule } from '@nestjs/axios';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -25,6 +28,8 @@ import { UserModule } from './user/user.module';
       synchronize: false,
       logging: true,
     }),
+    ScheduleModule.forRoot(),
+    TaskModule,
     CoopModule,
     WorkPostModule,
     UserModule,
