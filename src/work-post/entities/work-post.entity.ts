@@ -1,8 +1,9 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '../../common/dto/base.entity';
 
 @Entity()
-export class WorkPost {
-  @PrimaryColumn()
+export class WorkPost extends BaseEntity {
+  @Column()
   id: number;
 
   @Column()

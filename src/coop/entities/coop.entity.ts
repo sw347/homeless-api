@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '../../common/dto/base.entity';
 
 @Entity()
-export class Coop {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Coop extends BaseEntity {
   @Column()
   name: string;
 

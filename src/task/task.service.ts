@@ -27,6 +27,7 @@ export class TaskService {
       console.log('not saved!!');
       return await this.everyCoop();
     }
+    const createdAt = new Date();
     await this.coopRepository.save(
       data.map((val) => {
         const { realLocation, ...other } = val;
@@ -35,6 +36,7 @@ export class TaskService {
           lat: realLocation.lat,
           lng: realLocation.lat,
           ...other,
+          createdAt,
         };
       }),
     );
@@ -51,7 +53,8 @@ export class TaskService {
       console.log('work-post not saved!!');
       return await this.everyWorkPost();
     }
-    await this.workPostRepository.save(data);
+    const createdAt = new Date();
+    await this.workPostRepository.save({ ...data, createdAt });
     console.log('work-post saved');
   }
 
