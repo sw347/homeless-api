@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { TagDto } from "../tag/tag.dto";
 
 @Injectable()
 export class UserService {
@@ -11,23 +12,20 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>
   ) {
   }
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  create(token: string) {
+
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findOne(token: string) {
+    return `This action returns a #${token} user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  update(token: string , tags: TagDto) {
+    return `This action updates a #${tags.id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
+  setup(id: number) {
     return `This action removes a #${id} user`;
   }
 }

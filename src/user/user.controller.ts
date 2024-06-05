@@ -2,33 +2,57 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { TagDto } from "../tag/tag.dto";
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Param() token: string) {
+    return this.userService.create(token);
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findOne(@Param() token: string) {
+    return this.userService.findOne(token);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Patch()
+  update(@Param() token: string, @Body() tags: TagDto) {
+    return this.userService.update(token, tags);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
 }
+
+/**
+ *
+ * UserController
+ *  GET   /user (header: token) -> user findOne()
+ *  POST  /user (header: token) -> user update() first
+ *    body: {
+ *      name, email, organization, rule, tags
+ *    }
+ *  PATCH /user (header: token) -> user update()
+ *    body: {
+ *      tags, idle (update idleAt: Date)
+ *    }
+ *
+ * UserService
+ *  create()
+ *  findOne()
+ *  setup()
+ *  update()
+ *  ...elasticFunctions
+ *
+ * AuthController
+ *  GET /auth/login/naver (body: token)
+ *  GET /auth/login/kakao (body: token)
+ *  GET /auth/callback/kakao
+ *
+ * AuthService
+ *  login()
+ *  get (kakao, naver) userInfo()
+ *  createAccessToken() //jwt
+ *
+ */
