@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCoopDto } from './dto/create-coop.dto';
-import { UpdateCoopDto } from './dto/update-coop.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Coop } from './entities/coop.entity';
 import { Repository } from 'typeorm';
@@ -8,14 +6,13 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CoopService {
   constructor(
-    @InjectRepository(Coop) private coopRepository: Repository<Coop>
+    @InjectRepository(Coop) private coopRepository: Repository<Coop>,
   ) {}
   findAll() {
     return this.coopRepository.find();
   }
 
   findOne(id: string) {
-    return this.coopRepository.findOne({ where: { id } });
+    return this.coopRepository.findOne({ where: { uuid: id } });
   }
-
 }
