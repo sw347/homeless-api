@@ -7,6 +7,9 @@ export class Coop extends BaseEntity {
   name: string;
 
   @Column()
+  type: string;
+
+  @Column()
   location: string;
 
   @Column({ type: 'double', nullable: true })

@@ -9,6 +9,9 @@ export class CoopDto {
   name: string;
 
   @Expose()
+  type: string;
+
+  @Expose()
   location: string;
 
   @Expose()
