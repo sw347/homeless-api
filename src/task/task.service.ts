@@ -54,7 +54,9 @@ export class TaskService {
       return await this.everyWorkPost();
     }
     const createdAt = new Date();
-    await this.workPostRepository.save({ ...data, createdAt });
+    await this.workPostRepository.save(
+      data.map((val) => ({ ...val, createdAt })),
+    );
     console.log('work-post saved');
   }
 
