@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Param, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  HttpCode,
+  NotFoundException,
+} from '@nestjs/common';
 import { CoopService } from './coop.service';
 import { TaskService } from '../task/task.service';
 
@@ -15,8 +22,12 @@ export class CoopController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.coopService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const data = this.coopService.findOne(id);
+    if (data == null) {
+      return new NotFoundException();
+    }
+    return data;
   }
 
   @Post('crawler')

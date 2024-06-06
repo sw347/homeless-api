@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateWorkPostDto } from './dto/create-work-post.dto';
-import { UpdateWorkPostDto } from './dto/update-work-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WorkPost } from './entities/work-post.entity';
 import { Repository } from 'typeorm';
@@ -13,10 +11,17 @@ export class WorkPostService {
   ) {}
 
   findAll() {
-    return this.workPostRepository.find();
+    return this.workPostRepository
+      .createQueryBuilder()
+      .where('createdAt = (select max(createdAt) from work_post)')
+      .getMany();
   }
 
-  findOne(id: number) {
-    return this.workPostRepository.findOne({ where: { id: id } });
+  findOne(id: string) {
+    return this.workPostRepository
+      .createQueryBuilder()
+      .where('createdAt = (select max(createdAt) from work_post')
+      .andWhere({ uuid: id })
+      .getOne();
   }
 }

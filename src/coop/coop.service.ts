@@ -9,10 +9,17 @@ export class CoopService {
     @InjectRepository(Coop) private coopRepository: Repository<Coop>,
   ) {}
   findAll() {
-    return this.coopRepository.find();
+    return this.coopRepository
+      .createQueryBuilder()
+      .where('createdAt = (select max(createdAt) from coop)')
+      .getMany();
   }
 
   findOne(id: string) {
-    return this.coopRepository.findOne({ where: { uuid: id } });
+    return this.coopRepository
+      .createQueryBuilder()
+      .where('createdAt = (select max(createdAt) from coop')
+      .andWhere({ uuid: id })
+      .getOne();
   }
 }
