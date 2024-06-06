@@ -24,7 +24,7 @@ export class WorkPost extends BaseEntity {
   @Column()
   companyName: string;
 
-  @Column()
+  @Column({ nullable: true })
   recruitment?: string;
 
   @Column()
