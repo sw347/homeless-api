@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Tag } from "../../tag/tag.dto";
 
 @Entity()
 export class User {
@@ -28,4 +29,6 @@ export class User {
 
   @Column('simple-array')
   interest: string[];
+
+  tags: Tag[];
 }

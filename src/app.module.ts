@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { HttpModule } from '@nestjs/axios';
 import { TaskModule } from './task/task.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TaskModule } from './task/task.module';
     CoopModule,
     WorkPostModule,
     UserModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
