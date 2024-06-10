@@ -1,10 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { Tag } from "../../tag/tag.dto";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { TagDto } from "../../tag/dto/tag.dto";
+import { User } from "../../user/entities/user.entity";
 
 @Entity()
 export class Post {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @ManyToMany(()=>User)
+  @Column()
+  user: User;
+
+  @Column()
+  post: string;
 
   @Column()
   title: string;
@@ -25,8 +30,9 @@ export class Post {
   @Column()
   images: string[];
 
+  @ManyToMany(()=>TagDto)
   @Column()
-  tags: Tag[];
+  tags: TagDto[];
 }
 
 // user(fk) if role is admin
