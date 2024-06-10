@@ -8,13 +8,10 @@ export class PostDto {
   user: User;
 
   @Expose()
-  postId: string;
-
-  @Expose()
   title: string;
 
   @Expose()
-  subTitle: string;
+  subtitle: string;
 
   @Expose()
   startDate: Date;

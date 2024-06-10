@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Post } from "./entities/post.entity";
 import { Repository } from "typeorm";
+import { PostDto } from './dto/post.dto';
 
 @Injectable()
 export class PostService {
@@ -21,7 +21,7 @@ export class PostService {
     return `This action returns a #${id} post`;
   }
 
-  update(id: string) {
+  update(id: string, params: Partial<PostDto>) {
     return `This action updates a #${id} post`;
   }
 

@@ -1,22 +1,19 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { TagDto } from "../../tag/dto/tag.dto";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "../../user/entities/user.entity";
+import { BaseEntity } from "../../common/dto/base.entity";
+import { Tag } from "../../tag/entity/tag.entity";
 
 @Entity()
-export class Post {
-  @ManyToMany(()=>User)
+export class Post extends BaseEntity {
+  @ManyToOne(()=>User)
   @Column()
   user: User;
-
-  @Column()
-  post: string;
 
   @Column()
   title: string;
 
   @Column()
-  subTitle: string;
-
+  subtitle: string;
 
   @Column()
   startDate: Date;
@@ -30,9 +27,7 @@ export class Post {
   @Column()
   images: string[];
 
-  @ManyToMany(()=>TagDto)
+  @ManyToMany(()=>Tag)
   @Column()
-  tags: TagDto[];
+  tags: Tag[];
 }
-
-// user(fk) if role is admin

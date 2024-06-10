@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Patch, Param, Delete, Query } from "@nestjs/common";
+import { Controller, Get, Post, Patch, Param, Delete, Query, Body, NotFoundException } from "@nestjs/common";
 import { PostService } from './post.service';
+import { UpdatePostDto } from "./dto/update-post.dto";
 
 @Controller('post')
 export class PostController {
@@ -7,7 +8,7 @@ export class PostController {
 
   }
 
-  @Post('id')
+  @Post(':id')
   create(@Param('id') id: string) {
     return this.postService.create(id);
   }
@@ -22,13 +23,19 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
-  @Patch('update/:id/:postId')
-  update(@Param('id') id: string, @Param('postId') postId: string) {
-    return this.postService.update(id);
+  @Patch(':id')
+  async update(@Body() body: UpdatePostDto, @Param('id') id: string) {
+    const { params } = body;
+    const post = await this.postService.findOne(id);
+    if(post == null) {
+      throw new NotFoundException();
+    }
+
+    return await this.postService.update(id, params);
   }
 
-  @Delete('delete/:id/:postId')
-  remove(@Param('id') id: string, @Param('postId') postId: string) {
+  @Delete(':id')
+  remove(@Param('id') id: string) {
     return this.postService.remove(id);
   }
 }
