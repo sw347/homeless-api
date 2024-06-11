@@ -21,22 +21,15 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
-
   findOne(id: string) {
     return this.userRepository.findOne({ where: { uuid: id } });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    if (updateUserDto == null) {
-      return '';
-    }
-    return `This action updates a #${id} user`;
+  findByOAuthId(id: string, provider: string) {
+    return this.userRepository.findOne({
+      where: { oauthId: `${provider}:${id}` },
+    });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
-  }
+  update(id: string, updateUserDto: UpdateUserDto) {}
 }

@@ -51,11 +51,13 @@ export class AuthService {
   }
 
   async login(oauthUser: { id: string; provider: string }) {
-    let user = await this.userService.findOne(oauthUser.id);
+    const { id, provider } = oauthUser;
+
+    let user = await this.userService.findByOAuthId(id, provider);
 
     if (user == null) {
       await this.userService.create(oauthUser);
-      user = await this.userService.findOne(oauthUser.id);
+      user = await this.userService.findByOAuthId(id, provider);
     }
 
     return await this.createAccessToken(user.uuid);
