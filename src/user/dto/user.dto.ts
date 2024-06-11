@@ -1,29 +1,31 @@
 import { Exclude, Expose } from 'class-transformer';
 import { TagDto } from '../../tag/dto/tag.dto';
-import { UserDto } from '../../user/dto/user.dto';
 
 @Exclude()
-export class PostDto {
+export class UserDto {
   @Expose()
-  user: UserDto;
+  name?: string;
 
   @Expose()
-  title: string;
+  email?: string;
 
   @Expose()
-  subtitle: string;
+  organization?: string;
 
   @Expose()
-  startDate: Date;
+  phone?: string;
 
   @Expose()
-  endDate: Date;
+  birth?: string;
 
   @Expose()
-  description: string;
+  role: string;
 
   @Expose()
-  images: string[];
+  idleAt?: Date;
+
+  @Expose()
+  interest: string[];
 
   @Expose()
   tags: TagDto[];

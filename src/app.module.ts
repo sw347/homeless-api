@@ -7,8 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { HttpModule } from '@nestjs/axios';
 import { TaskModule } from './task/task.module';
+import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 
 @Module({
@@ -31,10 +31,11 @@ import { PostModule } from './post/post.module';
     }),
     ScheduleModule.forRoot(),
     TaskModule,
-    CoopModule,
-    WorkPostModule,
+    AuthModule,
     UserModule,
     PostModule,
+    CoopModule,
+    WorkPostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

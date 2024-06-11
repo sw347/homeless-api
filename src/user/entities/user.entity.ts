@@ -1,35 +1,37 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Tag } from "../../tag/dto/tag.dto";
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Tag } from '../../tag/entity/tag.entity';
+import { BaseEntity } from '../../common/dto/base.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends BaseEntity {
   @Column()
-  name: string;
+  oauthId: string;
 
-  @Column()
-  email: string;
+  @Column({ nullable: true })
+  name?: string;
 
-  @Column()
-  organization: string;
+  @Column({ nullable: true })
+  email?: string;
 
-  @Column()
-  phone: string;
+  @Column({ nullable: true })
+  organization?: string;
 
-  @Column({type: 'timestamp'})
-  birth: Date;
+  @Column({ nullable: true })
+  phone?: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  birth?: Date;
 
   @Column()
   role: string;
 
-  @Column()
-  idle: string;
+  @Column({ type: 'timestamp', nullable: true })
+  idleAt?: Date;
 
   @Column('simple-array')
   interest: string[];
 
-  @Column()
+  @ManyToMany(() => Tag)
+  @JoinTable()
   tags: Tag[];
 }

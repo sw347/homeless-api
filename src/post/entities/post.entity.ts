@@ -1,12 +1,11 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "../../user/entities/user.entity";
-import { BaseEntity } from "../../common/dto/base.entity";
-import { Tag } from "../../tag/entity/tag.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import { User } from '../../user/entities/user.entity';
+import { BaseEntity } from '../../common/dto/base.entity';
+import { Tag } from '../../tag/entity/tag.entity';
 
 @Entity()
 export class Post extends BaseEntity {
-  @ManyToOne(()=>User)
-  @Column()
+  @ManyToOne(() => User)
   user: User;
 
   @Column()
@@ -24,10 +23,10 @@ export class Post extends BaseEntity {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ type: 'simple-array' })
   images: string[];
 
-  @ManyToMany(()=>Tag)
-  @Column()
+  @ManyToMany(() => Tag)
+  @JoinTable()
   tags: Tag[];
 }
