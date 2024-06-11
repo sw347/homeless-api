@@ -8,26 +8,35 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>
-  ) {
-  }
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) {}
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    const { id, provider, ...data } = createUserDto;
+    const user = this.userRepository.create({
+      oauthId: `${provider}:${id}`,
+      ...data,
+      role: 'user',
+      interest: [],
+    });
+    return this.userRepository.save(user);
   }
 
   findAll() {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.userRepository.findOne({ where: { uuid: id } });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
+    if (updateUserDto == null) {
+      return '';
+    }
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} user`;
   }
 }

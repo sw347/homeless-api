@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '../../common/dto/base.entity';
 
 @Entity()
-export class Tag {
-  @PrimaryGeneratedColumn()
-  id: string;
-
+export class Tag extends BaseEntity {
   @Column()
   name: string;
 
