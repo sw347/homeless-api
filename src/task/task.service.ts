@@ -17,7 +17,7 @@ export class TaskService {
     private readonly httpService: HttpService,
   ) {}
 
-  @Cron('30 31 2 * * *')
+  @Cron('0 30 18 * * *')
   async everyCoop(): Promise<void> {
     console.log('coop save start');
     const coops = await this.getCoopAll();
@@ -43,7 +43,7 @@ export class TaskService {
     console.log('coop saved');
   }
 
-  @Cron('40 29 2 * * *')
+  @Cron('0 27 18 * * *')
   async everyWorkPost(): Promise<void> {
     console.log('work-post save start');
     const work_posts = await this.getWorkPostPublic();
