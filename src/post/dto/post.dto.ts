@@ -1,11 +1,11 @@
-import { Exclude, Expose } from "class-transformer";
-import { TagDto } from "../../tag/dto/tag.dto";
-import { User } from "../../user/entities/user.entity";
+import { Exclude, Expose } from 'class-transformer';
+import { TagDto } from '../../tag/dto/tag.dto';
+import { UserDto } from '../../user/dto/user.dto';
 
 @Exclude()
 export class PostDto {
   @Expose()
-  user: User;
+  user: UserDto;
 
   @Expose()
   title: string;
