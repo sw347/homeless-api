@@ -34,7 +34,7 @@ export class TaskService {
         if (realLocation == null) return { ...other, createdAt };
         return {
           lat: realLocation.lat,
-          lng: realLocation.lat,
+          lng: realLocation.lng,
           ...other,
           createdAt,
         };
