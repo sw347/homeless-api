@@ -29,35 +29,3 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 }
-
-/**
- *
- * UserController
- *  GET   /user (header: token) -> user findOne()
- *  POST  /user (header: token) -> user update() first
- *    body: {
- *      name, email, organization, rule, tags
- *    }
- *  PATCH /user (header: token) -> user update()
- *    body: {
- *      tags, idle (update idleAt: Date)
- *    }
- *
- * UserService
- *  create()
- *  findOne()
- *  setup()
- *  update()
- *  ...elasticFunctions
- *
- * AuthController
- *  GET /auth/login/naver (body: token)
- *  GET /auth/login/kakao (body: token)
- *  GET /auth/callback/kakao
- *
- * AuthService
- *  login()
- *  get (kakao, naver) userInfo()
- *  createAccessToken() //jwt
- *
- */

@@ -31,7 +31,7 @@ export class TaskService {
     await this.coopRepository.save(
       data.map((val) => {
         const { realLocation, ...other } = val;
-        if (realLocation == null) return other;
+        if (realLocation == null) return { ...other, createdAt };
         return {
           lat: realLocation.lat,
           lng: realLocation.lat,
