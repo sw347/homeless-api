@@ -1,12 +1,12 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
-import { User } from '../../user/entities/user.entity';
-import { BaseEntity } from '../../common/dto/base.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 import { Tag } from '../../tag/entity/tag.entity';
 
 @Entity()
 export class Post extends BaseEntity {
-  @ManyToOne(() => User)
-  user: User;
+  @ManyToOne(() => UserEntity)
+  user: UserEntity;
 
   @Column()
   title: string;

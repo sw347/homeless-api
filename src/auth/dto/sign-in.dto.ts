@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
-export class LoginDto {
+export class SignInDto {
   @Expose()
   provider: string;
 

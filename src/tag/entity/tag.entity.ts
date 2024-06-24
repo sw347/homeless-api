@@ -1,8 +1,10 @@
-import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../../common/dto/base.entity';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class Tag extends BaseEntity {
+export class Tag {
+  @PrimaryColumn()
+  id: string;
+
   @Column()
   name: string;
 

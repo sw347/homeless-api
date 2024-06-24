@@ -11,6 +11,7 @@ import { TaskModule } from './task/task.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { SchedulesModule } from './schedule/schedule.module';
+import { OrgModule } from './org/org.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { SchedulesModule } from './schedule/schedule.module';
     CoopModule,
     WorkPostModule,
     SchedulesModule,
+    OrgModule,
   ],
   controllers: [AppController],
   providers: [AppService],

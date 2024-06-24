@@ -1,29 +1,11 @@
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { Tag } from '../../tag/entity/tag.entity';
-import { BaseEntity } from '../../common/dto/base.entity';
+import { BaseUserEntity } from './base.user.entity';
 
-@Entity()
-export class User extends BaseEntity {
-  @Column()
+@Entity('user')
+export class UserEntity extends BaseUserEntity {
+  @Column({ nullable: true })
   oauthId: string;
-
-  @Column({ nullable: true })
-  name?: string;
-
-  @Column({ nullable: true })
-  email?: string;
-
-  @Column({ nullable: true })
-  organization?: string;
-
-  @Column({ nullable: true })
-  phone?: string;
-
-  @Column({ type: 'timestamp', nullable: true })
-  birth?: Date;
-
-  @Column()
-  role: string;
 
   @Column({ type: 'timestamp', nullable: true })
   idleAt?: Date;

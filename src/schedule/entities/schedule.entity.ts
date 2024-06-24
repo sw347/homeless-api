@@ -1,11 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
-import { User } from "../../user/entities/user.entity";
-import { BaseEntity } from "../../common/dto/base.entity";
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity()
 export class Schedule extends BaseEntity {
-  @ManyToOne(()=>User)
-  id: string;
+  @ManyToOne(() => UserEntity)
+  userId: string;
 
   @Column()
   startDate: Date;

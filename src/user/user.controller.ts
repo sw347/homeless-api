@@ -4,28 +4,154 @@ import {
   Post,
   Body,
   Patch,
-  Param,
   UseGuards,
-  Req,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtGuard } from '../auth/jwt.guard';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserDto } from './dto/user.dto';
 import { plainToInstance } from 'class-transformer';
+import { AdminService } from './admin/admin.service';
+import { OrgService } from '../org/org.service';
+import { UserEntity } from './entities/user.entity';
+import { User } from '../common/decorator/user.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { AdminDto } from './admin/dto/admin.dto';
+import { Admin } from './admin/entities/admin.entity';
+import { InitUserDto } from './dto/init-user.dto';
+import { InitAdminDto } from './admin/dto/init-admin.dto';
+import { OrgDto } from '../org/dto/org.dto';
+import { OrgUsersDto } from '../org/dto/org-users.dto';
+import { IdleDto } from './dto/idle.dto';
+import { UserIdleDto } from './dto/user-idle.dto';
 
 @Controller('user')
+@UseGuards(JwtGuard, RolesGuard)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly adminService: AdminService,
+    private readonly orgService: OrgService,
+  ) {}
 
-  @UseGuards(JwtGuard)
   @Get('me')
-  async findOne(@Req() req) {
-    return plainToInstance(UserDto, req.user);
+  async getUserInfo(@User() user: Admin | UserEntity) {
+    switch (user.role) {
+      case 'admin':
+        return plainToInstance(AdminDto, user);
+      case 'user':
+        return plainToInstance(UserDto, user);
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  @Post('me')
+  async initUserInfo(
+    @User() user: Admin | UserEntity,
+    @Body() body: InitAdminDto | InitUserDto,
+  ) {
+    switch (user.role) {
+      case 'admin': {
+        const { affected } = await this.adminService.update(user.id, body);
+        if (!affected) throw new InternalServerErrorException();
+
+        return plainToInstance(
+          AdminDto,
+          await this.adminService.findOne(user.id),
+        );
+      }
+      case 'user': {
+        const { affected } = await this.userService.update(user.id, body);
+        if (!affected) throw new InternalServerErrorException();
+
+        return plainToInstance(
+          UserDto,
+          await this.userService.findOne(user.id),
+        );
+      }
+    }
+  }
+
+  @Patch('me')
+  async updateUserInfo(
+    @User() user: Admin | UserEntity,
+    @Body() body: InitAdminDto | InitUserDto,
+  ) {
+    switch (user.role) {
+      case 'admin': {
+        const { affected } = await this.adminService.update(user.id, body);
+        if (!affected) throw new InternalServerErrorException();
+
+        return plainToInstance(
+          AdminDto,
+          await this.adminService.findOne(user.id),
+        );
+      }
+      case 'user': {
+        const { affected } = await this.userService.update(user.id, body);
+        if (!affected) throw new InternalServerErrorException();
+
+        return plainToInstance(
+          UserDto,
+          await this.userService.findOne(user.id),
+        );
+      }
+    }
+  }
+
+  @Get('org')
+  async getUserOrg(@User() user: Admin | UserEntity) {
+    switch (user.role) {
+      case 'admin':
+        const org = await this.orgService.findOne(user.organization.id);
+        const users = await this.userService.getOrgUsers(user.organization.id);
+        return plainToInstance(OrgUsersDto, {
+          ...org,
+          users: users.map<UserIdleDto>((user) => ({
+            name: user.name,
+            isIdle: user.idleAt != null,
+            idleAt: user.idleAt,
+          })),
+        });
+      case 'user':
+        if (user.organization == null) throw new NotFoundException();
+        return plainToInstance(OrgDto, user.organization);
+    }
+  }
+
+  @Post('org')
+  async updateUserOrg(
+    @User() user: Admin | UserEntity,
+    @Body() body: { id: string },
+  ) {
+    const org = await this.orgService.findOne(body.id);
+    switch (user.role) {
+      case 'admin':
+        return this.adminService.update(user.id, { org });
+      case 'user':
+        return this.userService.update(user.id, { org });
+    }
+  }
+
+  @Get('idle')
+  async getIdle(@User() user: UserEntity): Promise<IdleDto> {
+    return {
+      isIdle: user.idleAt != null,
+      idleAt: user.idleAt,
+    };
+  }
+
+  @Patch('idle')
+  async setIdle(
+    @User() user: UserEntity,
+    @Body() body: { isIdle: boolean },
+  ): Promise<IdleDto> {
+    const idleAt = body.isIdle ? new Date() : null;
+    const { affected } = await this.userService.update(user.id, { idleAt });
+    if (!affected) throw new InternalServerErrorException();
+    return {
+      isIdle: body.isIdle,
+      idleAt,
+    };
   }
 }

@@ -8,38 +8,36 @@ import {
   Body,
   NotFoundException,
   UseGuards,
-  Req
-} from "@nestjs/common";
+  Req,
+} from '@nestjs/common';
 import { PostService } from './post.service';
-import { UpdatePostDto } from "./dto/update-post.dto";
-import { JwtGuard } from "../auth/jwt.guard";
-import { CreatePostDto } from "./dto/create-post.dto";
-import { User } from "../user/entities/user.entity";
-import { plainToInstance } from "class-transformer";
-import { PostDto } from "./dto/post.dto";
+import { UpdatePostDto } from './dto/update-post.dto';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UserEntity } from '../user/entities/user.entity';
+import { plainToInstance } from 'class-transformer';
+import { PostDto } from './dto/post.dto';
 
 @Controller('post')
 export class PostController {
-  constructor(private readonly postService: PostService) {
-
-  }
+  constructor(private readonly postService: PostService) {}
 
   @UseGuards(JwtGuard)
   @Post()
-  create(@Req() req: {body: CreatePostDto, user: User}) {
+  create(@Req() req: { body: CreatePostDto; user: UserEntity }) {
     return this.postService.create(req.body, req.user);
   }
 
   @Get()
   findAll() {
-    return this.postService.findAll()
+    return this.postService.findAll();
   }
 
   @UseGuards(JwtGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const post =  await this.postService.findOne(id);
-    if(post == null) {
+    const post = await this.postService.findOne(id);
+    if (post == null) {
       throw new NotFoundException();
     }
 
@@ -50,7 +48,7 @@ export class PostController {
   @Patch(':id')
   async update(@Body() body: UpdatePostDto, @Param('id') id: string) {
     const post = await this.postService.findOne(id);
-    if(post == null) {
+    if (post == null) {
       throw new NotFoundException();
     }
 

@@ -2,14 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
   ) {}
+
   create(createUserDto: CreateUserDto) {
     const { id, provider, ...data } = createUserDto;
     const user = this.userRepository.create({
@@ -22,14 +24,22 @@ export class UserService {
   }
 
   findOne(id: string) {
-    return this.userRepository.findOne({ where: { uuid: id } });
+    return this.userRepository.findOne({ where: { id } });
   }
 
-  findByOAuthId(id: string, provider: string) {
+  findByOAuthId(id: string | number, provider: string) {
     return this.userRepository.findOne({
       where: { oauthId: `${provider}:${id}` },
     });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {}
+  getOrgUsers(id: string) {
+    return this.userRepository.find({
+      where: { organization: { id } },
+    });
+  }
+
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.userRepository.update(id, updateUserDto);
+  }
 }

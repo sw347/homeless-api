@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
-import { InjectRepository } from "@nestjs/typeorm";
-import { Post } from "./entities/post.entity";
-import { Repository } from "typeorm";
-import { User } from "../user/entities/user.entity";
-import { UpdatePostDto } from "./dto/update-post.dto";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Post } from './entities/post.entity';
+import { Repository } from 'typeorm';
+import { UserEntity } from '../user/entities/user.entity';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostService {
-  constructor(@InjectRepository(Post) private postRepository: Repository<Post>) {
-
-  }
-  create(createPostDto: CreatePostDto, user: User) {
+  constructor(
+    @InjectRepository(Post) private postRepository: Repository<Post>,
+  ) {}
+  create(createPostDto: CreatePostDto, user: UserEntity) {
     const post = this.postRepository.create({
       ...createPostDto,
-      user: user
-    })
+      user: user,
+    });
     return this.postRepository.save(post);
   }
 
@@ -24,7 +24,7 @@ export class PostService {
   }
 
   findOne(id: string) {
-    return this.postRepository.findOne({where: {uuid: id}});
+    return this.postRepository.findOne({ where: { id } });
   }
 
   update(id: string, params: UpdatePostDto) {

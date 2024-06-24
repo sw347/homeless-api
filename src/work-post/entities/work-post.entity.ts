@@ -1,8 +1,18 @@
-import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../../common/dto/base.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
-export class WorkPost extends BaseEntity {
+export class WorkPost {
+  @PrimaryGeneratedColumn('uuid')
+  uuid: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
   @Column()
   id: number;
 

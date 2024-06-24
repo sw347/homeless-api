@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
-import { Schedule } from "./entities/schedule.entity";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
+import { Schedule } from './entities/schedule.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ScheduleService {
-  constructor(@InjectRepository(Schedule) private scheduleRepository: Repository<Schedule>) {
-
-  }
+  constructor(
+    @InjectRepository(Schedule)
+    private scheduleRepository: Repository<Schedule>,
+  ) {}
   create(createScheduleDto: CreateScheduleDto) {
-    const schedule = this.scheduleRepository.create(createScheduleDto)
+    const schedule = this.scheduleRepository.create(createScheduleDto);
     return this.scheduleRepository.save(schedule);
   }
 
@@ -20,20 +21,20 @@ export class ScheduleService {
   }
 
   findById(id: string) {
-    return this.scheduleRepository.findOne({where: {uuid: id}});
+    return this.scheduleRepository.findOne({ where: { id } });
   }
 
   findByDay(day: Date) {
     return this.scheduleRepository
       .createQueryBuilder()
-      .where(`date_format(startDate, '%Y-%m-%d') = :day`, {day})
+      .where(`date_format(startDate, '%Y-%m-%d') = :day`, { day })
       .getMany();
   }
 
   findByMonth(month: number) {
     return this.scheduleRepository
       .createQueryBuilder()
-      .where(`date_format(startDate, '%Y%m') = :month`, {month})
+      .where(`date_format(startDate, '%Y%m') = :month`, { month })
       .getMany();
   }
 
