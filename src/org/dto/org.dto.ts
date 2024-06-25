@@ -4,14 +4,34 @@ import { Exclude, Expose } from 'class-transformer';
 export class OrgDto {
   @Expose()
   id: string;
+
   @Expose()
   name: string;
+
   @Expose()
-  phone: string;
+  type: string;
+
   @Expose()
   location: string;
+
   @Expose()
   lat: number;
+
   @Expose()
   lng: number;
+
+  @Expose()
+  description: string;
+
+  @Expose()
+  phone: string;
+
+  @Expose()
+  baseUrl: string;
+
+  @Expose()
+  mainImage: string;
+
+  @Expose()
+  subImages: string[];
 }

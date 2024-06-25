@@ -7,14 +7,29 @@ export class Org extends BaseEntity {
   name: string;
 
   @Column()
-  phone: string;
+  type: string;
 
   @Column()
   location: string;
 
-  @Column()
+  @Column({ type: 'double', nullable: true })
   lat: number;
 
-  @Column()
+  @Column({ type: 'double', nullable: true })
   lng: number;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @Column()
+  phone: string;
+
+  @Column({ type: 'text', nullable: true })
+  baseUrl: string;
+
+  @Column({ type: 'text', nullable: true })
+  mainImage: string;
+
+  @Column('simple-array')
+  subImages: string[];
 }

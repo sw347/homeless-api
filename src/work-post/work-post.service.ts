@@ -20,7 +20,7 @@ export class WorkPostService {
   findOne(id: string) {
     return this.workPostRepository
       .createQueryBuilder()
-      .where('createdAt = (select max(createdAt) from work_post')
+      .where('createdAt = (select max(createdAt) from work_post)')
       .andWhere({ uuid: id })
       .getOne();
   }

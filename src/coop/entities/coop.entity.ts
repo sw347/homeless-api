@@ -13,23 +13,11 @@ export class Coop extends BaseEntity {
   location: string;
 
   @Column({ type: 'double', nullable: true })
-  lat?: number;
+  lat: number;
 
   @Column({ type: 'double', nullable: true })
-  lng?: number;
-
-  @Column({ type: 'text', nullable: true })
-  description?: string;
+  lng: number;
 
   @Column()
   phone: string;
-
-  @Column({ type: 'text', nullable: true })
-  baseUrl: string;
-
-  @Column({ type: 'text', nullable: true })
-  mainImage: string;
-
-  @Column('simple-array')
-  subImages: string[];
 }

@@ -18,7 +18,7 @@ export class CoopService {
   findOne(id: string) {
     return this.coopRepository
       .createQueryBuilder()
-      .where('createdAt = (select max(createdAt) from coop')
+      .where('createdAt = (select max(createdAt) from coop)')
       .andWhere({ id })
       .getOne();
   }

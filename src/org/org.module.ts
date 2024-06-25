@@ -5,11 +5,13 @@ import { UserModule } from '../user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Org } from './entities/org.entity';
 import { AuthModule } from '../auth/auth.module';
+import { TaskModule } from '../task/task.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Org]),
     AuthModule,
+    TaskModule,
     forwardRef(() => UserModule),
   ],
   controllers: [OrgController],

@@ -15,29 +15,11 @@ export class CoopDto {
   location: string;
 
   @Expose()
-  realLocation?: LatLngDto;
-
-  @Expose()
-  description?: string;
-
-  @Expose()
-  phone: string;
-
-  @Expose()
-  baseUrl: string;
-
-  @Expose()
-  mainImage: string;
-
-  @Expose()
-  subImages?: string[];
-}
-
-@Exclude()
-export class LatLngDto {
-  @Expose()
   lat: number;
 
   @Expose()
   lng: number;
+
+  @Expose()
+  phone: string;
 }

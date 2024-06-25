@@ -6,26 +6,31 @@ import { WorkPost } from '../work-post/entities/work-post.entity';
 import { Cron } from '@nestjs/schedule';
 import { HttpService } from '@nestjs/axios';
 import { WorkPostDto } from '../work-post/dto/work-post.dto';
-import { CoopDto } from '../coop/dto/coop.dto';
+import { Org } from '../org/entities/org.entity';
+import { CrawlerOrgDto } from '../org/dto/crawler.org.dto';
+import { CrawlerCoopDto } from '../coop/dto/crawler.coop.dto';
 
 @Injectable()
 export class TaskService {
   constructor(
-    @InjectRepository(Coop) private coopRepository: Repository<Coop>,
-    @InjectRepository(WorkPost)
-    private workPostRepository: Repository<WorkPost>,
     private readonly httpService: HttpService,
+    @InjectRepository(Coop)
+    private readonly coopRepository: Repository<Coop>,
+    @InjectRepository(Org)
+    private readonly orgRepository: Repository<Org>,
+    @InjectRepository(WorkPost)
+    private readonly workPostRepository: Repository<WorkPost>,
   ) {}
 
-  @Cron('0 30 18 * * *')
-  async everyCoop(): Promise<void> {
+  @Cron('0 40 18 * * *')
+  async everyCoop(stop?: boolean): Promise<void> {
     console.log('coop save start');
-    const coops = await this.getCoopAll();
+    const coops = await this.getCoopList();
     const { data, status } = coops;
     console.log(data, status);
-    if (status > 302) {
+    if (status > 302 && !stop) {
       console.log('not saved!!');
-      return await this.everyCoop();
+      return await this.everyCoop(true);
     }
     const createdAt = new Date();
     await this.coopRepository.save(
@@ -43,15 +48,41 @@ export class TaskService {
     console.log('coop saved');
   }
 
-  @Cron('0 27 18 * * *')
-  async everyWorkPost(): Promise<void> {
+  @Cron('0 50 18 * * *')
+  async everyOrg(stop?: boolean): Promise<void> {
+    console.log('org save start');
+    const orgs = await this.getOrgAll();
+    const { data, status } = orgs;
+    console.log(data, status);
+    if (status > 302 && !stop) {
+      console.log('org not saved!!');
+      return await this.everyOrg(true);
+    }
+    const createdAt = new Date();
+    await this.orgRepository.save(
+      data.map((val) => {
+        const { realLocation, ...other } = val;
+        if (realLocation == null) return { ...other, createdAt };
+        return {
+          lat: realLocation.lat,
+          lng: realLocation.lng,
+          ...other,
+          createdAt,
+        };
+      }),
+    );
+    console.log('org saved');
+  }
+
+  @Cron('0 30 18 * * *')
+  async everyWorkPost(stop?: boolean): Promise<void> {
     console.log('work-post save start');
     const work_posts = await this.getWorkPostPublic();
     const { data, status } = work_posts;
     console.log(data, status);
-    if (status > 302) {
+    if (status > 302 && !stop) {
       console.log('work-post not saved!!');
-      return await this.everyWorkPost();
+      return await this.everyWorkPost(true);
     }
     const createdAt = new Date();
     await this.workPostRepository.save(
@@ -60,9 +91,15 @@ export class TaskService {
     console.log('work-post saved');
   }
 
-  getCoopAll() {
-    return this.httpService.axiosRef.get<CoopDto[]>(
+  getOrgAll() {
+    return this.httpService.axiosRef.get<CrawlerOrgDto[]>(
       'http://222.110.147.50:8725/coop/all',
+    );
+  }
+
+  getCoopList() {
+    return this.httpService.axiosRef.get<CrawlerCoopDto[]>(
+      'http://222.110.147.50:8725/coop/list',
     );
   }
 

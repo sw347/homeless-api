@@ -16,10 +16,17 @@ export class OrgService {
   }
 
   findAll() {
-    return this.orgRepository.find();
+    return this.orgRepository
+      .createQueryBuilder()
+      .where('createdAt = (select max(createdAt) from org)')
+      .getMany();
   }
 
   findOne(id: string) {
-    return this.orgRepository.findOne({ where: { id } });
+    return this.orgRepository
+      .createQueryBuilder()
+      .where('createdAt = (select max(createdAt) from org)')
+      .andWhere({ where: { id } })
+      .getOne();
   }
 }
