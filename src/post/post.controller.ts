@@ -13,6 +13,12 @@ import {
 import { PostService } from './post.service';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { ApplyDto } from '../common/dto/apply.dto';
+import { Admin } from '../user/admin/entities/admin.entity';
+import { User } from '../common/decorator/user.decorator';
+import { Roles } from '../common/decorator/roles.decorator';
+import { Role } from '../common/enums/role.enum'; 
 import { CreatePostDto } from './dto/create-post.dto';
 import { UserEntity } from '../user/entities/user.entity';
 import { plainToInstance } from 'class-transformer';
@@ -59,5 +65,15 @@ export class PostController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postService.remove(id);
+  }
+
+  @Get(':id/applies')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  async applies(
+    @User() user: Admin,
+    @Param('id') id: string,
+  ): Promise<ApplyDto[]> {
+    return [];
   }
 }
