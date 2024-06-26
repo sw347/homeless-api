@@ -14,12 +14,16 @@ export class AuthController {
   }
 
   @Get('admin')
-  adminSignIn(@Body() body: SignInAdminDto): Promise<string> {
-    return this.authService.signInAdmin(body);
+  adminSignIn(
+    @Query('email') email: string,
+    @Query('password') password: string,
+  ): Promise<string> {
+    const signInAdminDto: SignInAdminDto = { email, password };
+    return this.authService.signInAdmin(signInAdminDto);
   }
 
-  @Get()
-  async signIn(@Query() body: SignInDto): Promise<string> {
+  @Post()
+  async signIn(@Body() body: SignInDto): Promise<string> {
     const oauthUser = await this.authService.getOAuthUserData(
       body.provider,
       body.token,
