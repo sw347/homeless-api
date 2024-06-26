@@ -25,6 +25,10 @@ export class AdminService {
   }
 
   update(id: string, updateAdminDto: UpdateAdminDto) {
-    return this.adminRepository.update(id, updateAdminDto);
+    const { organization: org, ...other } = updateAdminDto;
+    return this.adminRepository.update(id, {
+      organization: typeof org === 'string' ? { id: org } : org,
+      ...other,
+    });
   }
 }

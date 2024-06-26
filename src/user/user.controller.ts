@@ -61,7 +61,10 @@ export class UserController {
         );
       }
       case 'user': {
-        const { affected } = await this.userService.update(user.id, body);
+        const { affected } = await this.userService.update(
+          user.id,
+          body as InitUserDto,
+        );
         if (!affected) throw new InternalServerErrorException();
 
         return plainToInstance(
@@ -88,7 +91,10 @@ export class UserController {
         );
       }
       case 'user': {
-        const { affected } = await this.userService.update(user.id, body);
+        const { affected } = await this.userService.update(
+          user.id,
+          body as InitUserDto,
+        );
         if (!affected) throw new InternalServerErrorException();
 
         return plainToInstance(
@@ -114,7 +120,7 @@ export class UserController {
           })),
         });
       case 'user':
-        if (user.organization == null) throw new NotFoundException();
+        if (user.organization === null) throw new NotFoundException();
         return plainToInstance(OrgDto, user.organization);
     }
   }
@@ -127,9 +133,9 @@ export class UserController {
     const org = await this.orgService.findOne(body.id);
     switch (user.role) {
       case 'admin':
-        return this.adminService.update(user.id, { org });
+        return this.adminService.update(user.id, { organization: org });
       case 'user':
-        return this.userService.update(user.id, { org });
+        return this.userService.update(user.id, { organization: org });
     }
   }
 

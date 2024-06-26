@@ -39,7 +39,12 @@ export class UserService {
     });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userRepository.update(id, updateUserDto);
+  update(id: string, updateUserDto: Partial<UpdateUserDto>) {
+    const { tags, organization: org, ...other } = updateUserDto;
+    return this.userRepository.update(id, {
+      organization: typeof org === 'string' ? { id: org } : org,
+      tags: tags.map((tag) => ({ id: tag })),
+      ...other,
+    });
   }
 }

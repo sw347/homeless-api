@@ -22,15 +22,15 @@ export class JwtGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
 
     const token = extractJwt(request);
-    if (token != null) {
+    if (token !== null) {
       const payload = await this.authService.verifyAccessToken(token);
 
       const user =
-        payload.role == 'admin'
+        payload.role === 'admin'
           ? await this.adminService.findOne(payload.id)
           : await this.userService.findOne(payload.id);
 
-      if (user == null) {
+      if (user === null) {
         throw new UnauthorizedException();
       }
       request.user = user;

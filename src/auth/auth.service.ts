@@ -65,7 +65,7 @@ export class AuthService {
 
     let user = await this.userService.findByOAuthId(id, provider);
 
-    if (user == null) {
+    if (user === null) {
       await this.userService.create(oauthUser as CreateUserDto);
       user = await this.userService.findByOAuthId(id, provider);
     }
@@ -76,7 +76,7 @@ export class AuthService {
   async signInAdmin(signInAdminDto: SignInAdminDto): Promise<string> {
     const { email, password } = signInAdminDto;
     const admin = await this.adminService.findByEmail(email);
-    if (admin == null) {
+    if (admin === null) {
       throw new NotFoundException();
     }
 
@@ -101,7 +101,7 @@ export class AuthService {
       password: hashed,
       ...data,
     });
-    if (created == null) {
+    if (created === null) {
       throw new InternalServerErrorException();
     }
     return this.signInAdmin({ email, password });

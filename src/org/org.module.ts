@@ -10,7 +10,7 @@ import { TaskModule } from '../task/task.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Org]),
-    AuthModule,
+    forwardRef(() => AuthModule),
     TaskModule,
     forwardRef(() => UserModule),
   ],

@@ -32,7 +32,7 @@ export class WorkPostController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const data = this.workPostService.findOne(id);
-    if (data == null) {
+    if (data === null) {
       return new NotFoundException();
     }
     return data;

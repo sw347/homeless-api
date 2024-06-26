@@ -24,7 +24,7 @@ export class CoopController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const data = this.coopService.findOne(id);
-    if (data == null) {
+    if (data === null) {
       throw new NotFoundException();
     }
     return data;

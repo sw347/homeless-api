@@ -18,7 +18,7 @@ import { ApplyDto } from '../common/dto/apply.dto';
 import { Admin } from '../user/admin/entities/admin.entity';
 import { User } from '../common/decorator/user.decorator';
 import { Roles } from '../common/decorator/roles.decorator';
-import { Role } from '../common/enums/role.enum'; 
+import { Role } from '../common/enums/role.enum';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UserEntity } from '../user/entities/user.entity';
 import { plainToInstance } from 'class-transformer';
@@ -43,7 +43,7 @@ export class PostController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const post = await this.postService.findOne(id);
-    if (post == null) {
+    if (post === null) {
       throw new NotFoundException();
     }
 
@@ -54,7 +54,7 @@ export class PostController {
   @Patch(':id')
   async update(@Body() body: UpdatePostDto, @Param('id') id: string) {
     const post = await this.postService.findOne(id);
-    if (post == null) {
+    if (post === null) {
       throw new NotFoundException();
     }
 

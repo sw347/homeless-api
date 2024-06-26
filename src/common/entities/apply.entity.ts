@@ -10,7 +10,10 @@ import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity()
 export class Apply {
-  @ManyToOne(() => UserEntity, { primary: true })
+  @PrimaryColumn()
+  userId: string;
+
+  @ManyToOne(() => UserEntity)
   @JoinColumn()
   user: UserEntity;
 
