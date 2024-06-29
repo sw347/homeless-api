@@ -95,7 +95,7 @@ export class AuthService {
       throw new ConflictException();
     }
 
-    const hashed = this.hashPassword(password);
+    const hashed = await this.hashPassword(password);
     const created = await this.adminService.create({
       email,
       password: hashed,
