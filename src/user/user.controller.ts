@@ -109,7 +109,9 @@ export class UserController {
   async getUserOrg(@User() user: Admin | UserEntity) {
     switch (user.role) {
       case 'admin':
-        const org = await this.orgService.findOne(user.organization.id);
+	if (user.organization == null) throw new NotFoundException();
+
+      	const org = await this.orgService.findOne(user.organization.id);
         const users = await this.userService.getOrgUsers(user.organization.id);
         return plainToInstance(OrgUsersDto, {
           ...org,
