@@ -17,11 +17,17 @@ export class AdminService {
   }
 
   findOne(id: string): Promise<Admin> {
-    return this.adminRepository.findOne({ where: { id } });
+    return this.adminRepository.findOne({
+      where: { id },
+      relations: ['organization'],
+    });
   }
 
   findByEmail(email: string): Promise<Admin> {
-    return this.adminRepository.findOne({ where: { email } });
+    return this.adminRepository.findOne({
+      where: { email },
+      relations: ['organization'],
+    });
   }
 
   update(id: string, updateAdminDto: UpdateAdminDto) {

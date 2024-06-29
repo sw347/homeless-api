@@ -1,5 +1,6 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { TagDto } from '../../tag/dto/tag.dto';
+import { OrgDto } from '../../org/dto/org.dto';
 
 @Exclude()
 export class UserDto {
@@ -10,13 +11,11 @@ export class UserDto {
   email?: string;
 
   @Expose()
-  organization?: string;
+  @Type(() => OrgDto)
+  organization?: OrgDto;
 
   @Expose()
   phone?: string;
-
-  @Expose()
-  birth?: string;
 
   @Expose()
   role: string;
@@ -28,5 +27,6 @@ export class UserDto {
   interest: string[];
 
   @Expose()
+  @Type(() => TagDto)
   tags: TagDto[];
 }
