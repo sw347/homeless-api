@@ -12,7 +12,10 @@ export class AdminService {
   ) {}
 
   create(createAdminDto: CreateAdminDto): Promise<Admin> {
-    const admin = this.adminRepository.create(createAdminDto);
+    const admin = this.adminRepository.create({
+      ...createAdminDto,
+      role: 'admin',
+    });
     return this.adminRepository.save(admin);
   }
 
