@@ -26,8 +26,8 @@ export class ScheduleController {
 
   @Get()
   search(@Query('day') day?: Date, @Query('month') month?: number) {
-    if (day != null) return this.scheduleService.findByDay(day);
-    if (month != null) return this.scheduleService.findByMonth(month);
+    if (!!day) return this.scheduleService.findByDay(day);
+    if (!!month) return this.scheduleService.findByMonth(month);
   }
 
   @Get('/all')
