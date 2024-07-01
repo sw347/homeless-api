@@ -25,6 +25,7 @@ import { OrgDto } from '../org/dto/org.dto';
 import { OrgUsersDto } from '../org/dto/org-users.dto';
 import { IdleDto } from './dto/idle.dto';
 import { UserIdleDto } from './dto/user-idle.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('user')
 @UseGuards(JwtGuard, RolesGuard)
@@ -34,6 +35,11 @@ export class UserController {
     private readonly adminService: AdminService,
     private readonly orgService: OrgService,
   ) {}
+
+  @Post('temp')
+  async forceAddUser(@Body() body: CreateUserDto) {
+    return this.userService.create(body);
+  }
 
   @Get('me')
   async getUserInfo(@User() user: Admin | UserEntity) {
@@ -109,9 +115,9 @@ export class UserController {
   async getUserOrg(@User() user: Admin | UserEntity) {
     switch (user.role) {
       case 'admin':
-	if (user.organization == null) throw new NotFoundException();
+        if (user.organization == null) throw new NotFoundException();
 
-      	const org = await this.orgService.findOne(user.organization.id);
+        const org = await this.orgService.findOne(user.organization.id);
         const users = await this.userService.getOrgUsers(user.organization.id);
         return plainToInstance(OrgUsersDto, {
           ...org,

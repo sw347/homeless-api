@@ -23,10 +23,14 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UserEntity } from '../user/entities/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { PostDto } from './dto/post.dto';
+import { ApplyService } from '../common/apply.service';
 
 @Controller('post')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly applyService: ApplyService,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Post()
@@ -68,12 +72,20 @@ export class PostController {
   }
 
   @Get(':id/applies')
-  @UseGuards(JwtGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @UseGuards(JwtGuard)
   async applies(
     @User() user: Admin,
     @Param('id') id: string,
   ): Promise<ApplyDto[]> {
-    return [];
+    return plainToInstance(
+      ApplyDto,
+      await this.applyService.findAll(id, 'post'),
+    );
+  }
+
+  @UseGuards(JwtGuard)
+  @Post(':id/apply')
+  async apply(@User() user: UserEntity, @Param('id') id: string) {
+    return this.applyService.create(user.id, id, 'post');
   }
 }
