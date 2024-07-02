@@ -30,7 +30,11 @@ export class ApplyService {
     });
     const applied = await this.applyRepository.save(apply);
     return {
-      user: applied,
+      user: {
+        name: user.name,
+        isIdle: user.idleAt != null,
+        idleAt: user.idleAt,
+      },
       post,
       type,
       createdAt: applied.createdAt,
