@@ -15,6 +15,10 @@ import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { Schedule } from './entities/schedule.entity';
+import { User } from '../common/decorator/user.decorator';
+import { UserEntity } from '../user/entities/user.entity';
+import { ScheduleDto } from './dto/schedule.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('schedule')
 export class ScheduleController {
@@ -22,14 +26,16 @@ export class ScheduleController {
 
   @UseGuards(JwtGuard)
   @Post()
-  async create(@Body() body: CreateScheduleDto) {
-    const { startDate, endDate, ...other } =
-      await this.scheduleService.create(body);
-    return {
+  async create(@User() user: UserEntity, @Body() body: CreateScheduleDto) {
+    const { startDate, endDate, ...other } = await this.scheduleService.create(
+      user.id,
+      body,
+    );
+    return plainToInstance(ScheduleDto, {
       ...other,
-      startDate: new Date(startDate.getTime() + 9 * 60 * 60 * 1000),
-      endDate: new Date(endDate.getTime() + 9 * 60 * 60 * 1000),
-    };
+      startDate: startDate,
+      endDate: endDate,
+    });
   }
 
   @Get()

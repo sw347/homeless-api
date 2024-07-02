@@ -13,6 +13,7 @@ import { PostModule } from './post/post.module';
 import { SchedulesModule } from './schedule/schedule.module';
 import { OrgModule } from './org/org.module';
 import { LoggingMiddleware } from './common/logging.middleware';
+import { FcmModule } from './firebase/fcm.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { LoggingMiddleware } from './common/logging.middleware';
     WorkPostModule,
     SchedulesModule,
     OrgModule,
+    FcmModule,
   ],
   controllers: [AppController],
   providers: [AppService],

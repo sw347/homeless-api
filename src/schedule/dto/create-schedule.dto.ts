@@ -1,6 +1,6 @@
 export class CreateScheduleDto {
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   title: string;
   description: string;
 }

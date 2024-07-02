@@ -5,7 +5,7 @@ import { BaseEntity } from '../../common/entities/base.entity';
 @Entity()
 export class Schedule extends BaseEntity {
   @ManyToOne(() => UserEntity)
-  userId: string;
+  user: UserEntity;
 
   @Column()
   startDate: Date;

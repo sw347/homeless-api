@@ -11,8 +11,14 @@ export class ScheduleService {
     @InjectRepository(Schedule)
     private scheduleRepository: Repository<Schedule>,
   ) {}
-  create(createScheduleDto: CreateScheduleDto) {
-    const schedule = this.scheduleRepository.create(createScheduleDto);
+  create(userId: string, createScheduleDto: CreateScheduleDto) {
+    const schedule: Schedule = this.scheduleRepository.create({
+      user: { id: userId },
+      startDate: new Date(createScheduleDto.startDate),
+      endDate: new Date(createScheduleDto.endDate),
+      title: createScheduleDto.title,
+      description: createScheduleDto.description,
+    });
     return this.scheduleRepository.save(schedule);
   }
 
