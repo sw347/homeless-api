@@ -100,7 +100,37 @@ async def upsert_user(body: UpsertUser):
 
 
 @app.get("/search/user")
-async def search_users_by_post(user_id: str) -> list[str]:
+async def search_users_by_post(post_id: str) -> list[str]:
+    try:
+        post = es.get(index="posts", id=post_id)
+        post_vector = post['_source']['vector']
+
+        script_query = {
+            "script_score": {
+                "query": {"match_all": {}},
+                "script": {
+                    "source": "cosineSimilarity(params.query_vector, 'vector') + 1.0",
+                    "params": {"query_vector": post_vector}
+                }
+            }
+        }
+
+        response = es.search(
+            index="users",
+            body={
+                "size": 10,
+                "query": script_query,
+                "_source": ["user_id"]
+            }
+        )
+
+        return [hit["_source"]["user_id"] for hit in response["hits"]["hits"]]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error searching posts by user: {str(e)}")
+
+
+@app.get("/search/post")
+async def search_posts_by_user(user_id: str) -> list[str]:
     try:
         user = es.get(index="users", id=user_id)
         user_vector = user['_source']['vector']
@@ -129,34 +159,34 @@ async def search_users_by_post(user_id: str) -> list[str]:
         raise HTTPException(status_code=500, detail=f"Error searching users by post: {str(e)}")
 
 
-@app.get("/search/post")
-async def search_posts_by_user(post_id: str) -> list[str]:
+@app.get("/search/work-post")
+async def search_work_posts_by_user(user_id: str) -> list[str]:
     try:
-        post = es.get(index="posts", id=post_id)
-        post_vector = post['_source']['vector']
+        user = es.get(index="users", id=user_id)
+        user_vector = user['_source']['vector']
 
         script_query = {
             "script_score": {
                 "query": {"match_all": {}},
                 "script": {
                     "source": "cosineSimilarity(params.query_vector, 'vector') + 1.0",
-                    "params": {"query_vector": post_vector}
+                    "params": {"query_vector": user_vector}
                 }
             }
         }
 
         response = es.search(
-            index="users",
+            index="work_posts",
             body={
                 "size": 10,
                 "query": script_query,
-                "_source": ["user_id"]
+                "_source": ["work_post_id"]
             }
         )
 
-        return [hit["_source"]["user_id"] for hit in response["hits"]["hits"]]
+        return [hit["_source"]["work_post_id"] for hit in response["hits"]["hits"]]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error searching posts by user: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error searching users by post: {str(e)}")
 
 
 if __name__ == "__main__":

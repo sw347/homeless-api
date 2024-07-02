@@ -16,4 +16,7 @@ export class UserEntity extends BaseUserEntity {
   @ManyToMany(() => Tag)
   @JoinTable()
   tags: Tag[];
+
+  @Column({ nullable: true })
+  fcmToken: string;
 }

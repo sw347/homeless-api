@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as firebaseConfig from './firebase-config.json';
 import * as admin from 'firebase-admin';
+import { HttpService } from '@nestjs/axios';
+import { UserService } from '../user/user.service';
+import { Post } from '../post/entities/post.entity';
+import { WorkPost } from '../work-post/entities/work-post.entity';
 
 const firebase_params = {
   type: firebaseConfig.type,
@@ -17,7 +21,10 @@ const firebase_params = {
 
 @Injectable()
 export class FcmService {
-  constructor() {
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly userService: UserService,
+  ) {
     admin.initializeApp({
       credential: admin.credential.cert(firebase_params),
     });
@@ -36,5 +43,13 @@ export class FcmService {
     };
 
     return await admin.messaging().send(payload);
+  }
+
+  async sendPost(post: Post) {
+    // this.httpService.get()
+  }
+
+  async sendWorkPost(workPost: WorkPost) {
+    //
   }
 }

@@ -56,6 +56,11 @@ export class UserController {
     }
   }
 
+  @Post('fcmToken')
+  async setToken(@User() user: UserEntity, @Body() body: { token: string }) {
+    return this.userService.updateToken(user.id, body.token);
+  }
+
   @Post('me')
   async initUserInfo(
     @User() user: Admin | UserEntity,
