@@ -34,11 +34,11 @@ export class FcmService {
     const payload = {
       token: token,
       notification: {
-        title: `새 게시물을 확인해보세요!`,
-        body: `따스한채움터 급식보조원`,
+        title: title,
+        body: message,
       },
       data: {
-        body: `따스한채움터 급식보조원`,
+        body: message,
       },
     };
 
@@ -53,6 +53,9 @@ export class FcmService {
     const tokens = (await this.userService.finds(users.data)).map(
       (user) => user.fcmToken,
     );
+    // const tokens = [
+    //   'cQF6338ITySHTSvC89guDt:APA91bFKa0souHX7W8Q9L0mbJUbsQzvje_ey094Mjm-xCBlELRPC0ExhyVTgUPOwj7xdtPnZ3gt3VDznXC_7WpnqIPngHuzRwDK7_8J3SKqoIIPQrYUAybqvWoO_-FC4rWjqQN2WZNlI',
+    // ];
 
     const payload = {
       tokens,

@@ -11,7 +11,7 @@ export class FcmController {
   @Post()
   async send(@Body() body: { title: string; message: string }) {
     const token =
-      'clKEWj3WSC-M14OFLZdIhs:APA91bHZYVf0rmckcKcIzcLFaSgk1yXvpxMvZ61nnokeoSFMdQD4Vpw-jFV2WcQcEDUt-0W6zaqbWvDVnVO62IelO1jD_NPA38O7GA-hxNb30CbDb4IOChzG4OAR9TCVWOaqAUctSaZE';
+      'cQF6338ITySHTSvC89guDt:APA91bFKa0souHX7W8Q9L0mbJUbsQzvje_ey094Mjm-xCBlELRPC0ExhyVTgUPOwj7xdtPnZ3gt3VDznXC_7WpnqIPngHuzRwDK7_8J3SKqoIIPQrYUAybqvWoO_-FC4rWjqQN2WZNlI';
     return this.fcmService.apply(token, body.title, body.message);
   }
 }

@@ -107,6 +107,7 @@ async def upsert_user(body: UpsertUser):
 @app.get("/search/user")
 async def search_users_by_post(title: str, description: str):
     try:
+        print(title + " zz\n " + description)
         vector = model.encode(title + " " + description).tolist()
         script_query = {
             "script_score": {

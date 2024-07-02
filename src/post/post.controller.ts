@@ -24,18 +24,22 @@ import { UserEntity } from '../user/entities/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { PostDto } from './dto/post.dto';
 import { ApplyService } from '../common/apply.service';
+import { FcmService } from '../firebase/fcm.service';
 
 @Controller('post')
 export class PostController {
   constructor(
     private readonly postService: PostService,
     private readonly applyService: ApplyService,
+    private readonly fcmService: FcmService,
   ) {}
 
   @UseGuards(JwtGuard)
   @Post()
-  create(@Req() req: { body: CreatePostDto; user: UserEntity }) {
-    return this.postService.create(req.body, req.user);
+  async create(@Req() req: { body: CreatePostDto; user: UserEntity }) {
+    const post = await this.postService.create(req.body, req.user);
+    await this.fcmService.sendPost(post);
+    return post;
   }
 
   @Get()

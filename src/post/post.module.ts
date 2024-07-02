@@ -9,11 +9,13 @@ import { UserModule } from '../user/user.module';
 import { ApplyService } from '../common/apply.service';
 import { Apply } from '../common/entities/apply.entity';
 import { WorkPost } from '../work-post/entities/work-post.entity';
+import { FcmModule } from '../firebase/fcm.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Post, Tag, Apply, WorkPost]),
     AuthModule,
     UserModule,
+    FcmModule,
   ],
   controllers: [PostController],
   providers: [PostService, ApplyService],
