@@ -80,7 +80,7 @@ export class UserService {
     }
 
     if (updateUserDto.interest != null) {
-      await this.httpService.axiosRef.post('http://localhost:8727/', {
+      await this.httpService.axiosRef.post('http://localhost:8727/user', {
         user_id: id,
         query: updateUserDto.interest,
       });

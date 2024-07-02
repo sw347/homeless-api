@@ -34,11 +34,11 @@ export class FcmService {
     const payload = {
       token: token,
       notification: {
-        title: title,
-        body: message,
+        title: `새 게시물을 확인해보세요!`,
+        body: `따스한채움터 급식보조원`,
       },
       data: {
-        body: message,
+        body: `따스한채움터 급식보조원`,
       },
     };
 

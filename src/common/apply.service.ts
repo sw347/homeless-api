@@ -48,6 +48,9 @@ export class ApplyService {
     });
 
     const postIds = applies.map((apply) => apply.postId);
+    if (postIds.length == 0) {
+      return [];
+    }
 
     let actual;
     if (type == 'post') {
@@ -56,7 +59,7 @@ export class ApplyService {
         .where('id IN (:...postIds)', { postIds })
         .getMany();
       return applies.map((apply) => ({
-        post: actual.filter((actual) => apply.postId == actual.id)[0],
+        post: actual.filter((actual: Post) => apply.postId == actual.id)[0],
         type,
         createdAt: apply.createdAt,
       }));
@@ -66,7 +69,9 @@ export class ApplyService {
         .where('id IN (:...postIds)', { postIds })
         .getMany();
       return applies.map((apply) => ({
-        post: actual.filter((actual) => apply.postId == actual.id)[0],
+        post: actual.filter(
+          (actual: WorkPost) => apply.postId == actual.id.toString(),
+        )[0],
         type,
         createdAt: apply.createdAt,
       }));
