@@ -14,6 +14,7 @@ import { SchedulesModule } from './schedule/schedule.module';
 import { OrgModule } from './org/org.module';
 import { LoggingMiddleware } from './common/logging.middleware';
 import { FcmModule } from './firebase/fcm.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { FcmModule } from './firebase/fcm.module';
     SchedulesModule,
     OrgModule,
     FcmModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],

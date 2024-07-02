@@ -30,10 +30,10 @@ export class ScheduleService {
     return this.scheduleRepository.findOne({ where: { id } });
   }
 
-  findByDay(day: Date) {
+  findByDay(day: string) {
     return this.scheduleRepository
       .createQueryBuilder()
-      .where(`date_format(startDate, '%Y-%m-%d') = :day`, { day })
+      .where('DATE(startDate) <= :day AND :day <= DATE(endDate)', { day })
       .getMany();
   }
 

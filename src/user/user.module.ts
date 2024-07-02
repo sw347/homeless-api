@@ -8,12 +8,14 @@ import { Admin } from './admin/entities/admin.entity';
 import { Tag } from '../tag/entity/tag.entity';
 import { OrgModule } from '../org/org.module';
 import { AuthModule } from '../auth/auth.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity, Admin, Tag]),
     forwardRef(() => OrgModule),
     forwardRef(() => AuthModule),
+    HttpModule,
   ],
   controllers: [UserController],
   providers: [UserService, AdminService],

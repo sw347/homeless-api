@@ -39,7 +39,7 @@ export class ScheduleController {
   }
 
   @Get()
-  async search(@Query('day') day?: Date, @Query('month') month?: number) {
+  async search(@Query('day') day?: string, @Query('month') month?: number) {
     let date: Schedule[];
     if (day != null) date = await this.scheduleService.findByDay(day);
     if (month != null) date = await this.scheduleService.findByMonth(month);

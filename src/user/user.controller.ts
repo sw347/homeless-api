@@ -41,6 +41,11 @@ export class UserController {
     return this.userService.create(body);
   }
 
+  @Get('temp')
+  async findAll() {
+    return this.userService.findAll();
+  }
+
   @Get('me')
   async getUserInfo(@User() user: Admin | UserEntity) {
     switch (user.role) {

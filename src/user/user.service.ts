@@ -24,6 +24,10 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
+  findAll() {
+    return this.userRepository.find({ relations: ['organization', 'tags'] });
+  }
+
   findOne(id: string) {
     return this.userRepository.findOne({
       where: { id },
