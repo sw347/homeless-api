@@ -63,6 +63,6 @@ export class WorkPostController {
   @UseGuards(JwtGuard)
   @Post(':id/apply')
   async apply(@User() user: UserEntity, @Param('id') id: string) {
-    return this.applyService.create(user.id, id, 'work-post');
+    return this.applyService.create(user, id, 'work-post');
   }
 }

@@ -4,6 +4,7 @@ import { Apply } from './entities/apply.entity';
 import { Repository } from 'typeorm';
 import { Post } from '../post/entities/post.entity';
 import { WorkPost } from '../work-post/entities/work-post.entity';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Injectable()
 export class ApplyService {
@@ -16,9 +17,24 @@ export class ApplyService {
     private readonly workPostRepository: Repository<WorkPost>,
   ) {}
 
-  async create(userId: string, postId: string, type: 'post' | 'work-post') {
-    const apply = this.applyRepository.create({ userId, postId, type });
-    return this.applyRepository.save(apply);
+  async create(user: UserEntity, postId: string, type: 'post' | 'work-post') {
+    const post =
+      type == 'post'
+        ? await this.postRepository.findOne({ where: { id: postId } })
+        : await this.workPostRepository.findOne({ where: { uuid: postId } });
+    const apply = this.applyRepository.create({
+      userId: user.id,
+      postId,
+      type,
+      createdAt: new Date(),
+    });
+    const applied = await this.applyRepository.save(apply);
+    return {
+      user: applied,
+      post,
+      type,
+      createdAt: applied.createdAt,
+    };
   }
 
   async findAll(postId: string, type: 'post' | 'work-post') {
