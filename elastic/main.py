@@ -105,7 +105,7 @@ async def upsert_user(body: UpsertUser):
 
 
 @app.get("/search/user")
-async def search_users_by_post(title: str, description: str) -> list[str]:
+async def search_users_by_post(title: str, description: str):
     try:
         vector = model.encode(title + " " + description).tolist()
         script_query = {
@@ -133,7 +133,7 @@ async def search_users_by_post(title: str, description: str) -> list[str]:
 
 
 @app.get("/search/post")
-async def search_posts_by_user(user_id: str) -> list[str]:
+async def search_posts_by_user(user_id: str):
     try:
         user = es.get(index="users", id=user_id)
         user_vector = user['_source']['vector']
@@ -163,7 +163,7 @@ async def search_posts_by_user(user_id: str) -> list[str]:
 
 
 @app.get("/search/work-post")
-async def search_work_posts_by_user(user_id: str) -> list[str]:
+async def search_work_posts_by_user(user_id: str):
     try:
         user = es.get(index="users", id=user_id)
         user_vector = user['_source']['vector']
