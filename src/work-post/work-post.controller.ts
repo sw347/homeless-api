@@ -33,6 +33,12 @@ export class WorkPostController {
     return this.workPostService.findAll();
   }
 
+  @UseGuards(JwtGuard)
+  @Get('my')
+  async myApplies(@User() user: UserEntity) {
+    return this.applyService.findByUser(user.id, 'work-post');
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const data = this.workPostService.findOne(id);

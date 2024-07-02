@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Post } from '../post/entities/post.entity';
 import { WorkPost } from '../work-post/entities/work-post.entity';
 import { UserEntity } from '../user/entities/user.entity';
+import { ApplyDto } from './dto/apply.dto';
 
 @Injectable()
 export class ApplyService {
@@ -39,6 +40,37 @@ export class ApplyService {
       type,
       createdAt: applied.createdAt,
     };
+  }
+
+  async findByUser(userId: string, type: 'post' | 'work-post') {
+    const applies = await this.applyRepository.find({
+      where: { userId, type },
+    });
+
+    const postIds = applies.map((apply) => apply.postId);
+
+    let actual;
+    if (type == 'post') {
+      actual = await this.postRepository
+        .createQueryBuilder()
+        .where('id IN (:...postIds)', { postIds })
+        .getMany();
+      return applies.map((apply) => ({
+        post: actual.filter((actual) => apply.postId == actual.id)[0],
+        type,
+        createdAt: apply.createdAt,
+      }));
+    } else if (type == 'work-post') {
+      actual = await this.workPostRepository
+        .createQueryBuilder()
+        .where('id IN (:...postIds)', { postIds })
+        .getMany();
+      return applies.map((apply) => ({
+        post: actual.filter((actual) => apply.postId == actual.id)[0],
+        type,
+        createdAt: apply.createdAt,
+      }));
+    }
   }
 
   async findAll(postId: string, type: 'post' | 'work-post') {

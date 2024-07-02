@@ -44,6 +44,12 @@ export class PostController {
   }
 
   @UseGuards(JwtGuard)
+  @Get('my')
+  async myApplies(@User() user: UserEntity) {
+    return this.applyService.findByUser(user.id, 'post');
+  }
+
+  @UseGuards(JwtGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const post = await this.postService.findOne(id);
