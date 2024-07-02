@@ -8,11 +8,13 @@ import {
   Delete,
   Query,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { Schedule } from './entities/schedule.entity';
 
 @Controller('schedule')
 export class ScheduleController {
@@ -20,25 +22,56 @@ export class ScheduleController {
 
   @UseGuards(JwtGuard)
   @Post()
-  create(@Body() body: CreateScheduleDto) {
-    return this.scheduleService.create(body);
+  async create(@Body() body: CreateScheduleDto) {
+    const { startDate, endDate, ...other } =
+      await this.scheduleService.create(body);
+    return {
+      ...other,
+      startDate: new Date(startDate.getTime() + 9 * 60 * 60 * 1000),
+      endDate: new Date(endDate.getTime() + 9 * 60 * 60 * 1000),
+    };
   }
 
   @Get()
-  search(@Query('day') day?: Date, @Query('month') month?: number) {
-    if (!!day) return this.scheduleService.findByDay(day);
-    if (!!month) return this.scheduleService.findByMonth(month);
+  async search(@Query('day') day?: Date, @Query('month') month?: number) {
+    let date: Schedule[];
+    if (day != null) date = await this.scheduleService.findByDay(day);
+    if (month != null) date = await this.scheduleService.findByMonth(month);
+
+    if (date == null) throw new BadRequestException();
+    return date.map((date) => {
+      const { startDate, endDate, ...other } = date;
+      return {
+        ...other,
+        startDate: new Date(startDate.getTime() + 9 * 60 * 60 * 1000),
+        endDate: new Date(endDate.getTime() + 9 * 60 * 60 * 1000),
+      };
+    });
   }
 
   @Get('/all')
-  findAll() {
-    return this.scheduleService.findAll();
+  async findAll() {
+    const date = await this.scheduleService.findAll();
+    return date.map((date) => {
+      const { startDate, endDate, ...other } = date;
+      return {
+        ...other,
+        startDate: new Date(startDate.getTime() + 9 * 60 * 60 * 1000),
+        endDate: new Date(endDate.getTime() + 9 * 60 * 60 * 1000),
+      };
+    });
   }
 
   @UseGuards(JwtGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.scheduleService.findById(id);
+  async findOne(@Param('id') id: string) {
+    const { startDate, endDate, ...other } =
+      await this.scheduleService.findById(id);
+    return {
+      ...other,
+      startDate: new Date(startDate.getTime() + 9 * 60 * 60 * 1000),
+      endDate: new Date(endDate.getTime() + 9 * 60 * 60 * 1000),
+    };
   }
 
   @UseGuards(JwtGuard)
@@ -52,7 +85,13 @@ export class ScheduleController {
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.scheduleService.remove(id);
+  async remove(@Param('id') id: string) {
+    const { startDate, endDate, ...other } =
+      await this.scheduleService.remove(id);
+    return {
+      ...other,
+      startDate: new Date(startDate.getTime() + 9 * 60 * 60 * 1000),
+      endDate: new Date(endDate.getTime() + 9 * 60 * 60 * 1000),
+    };
   }
 }
