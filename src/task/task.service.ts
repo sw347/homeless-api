@@ -84,7 +84,13 @@ export class TaskService {
       console.log('work-post not saved!!');
       return await this.everyWorkPost(true);
     }
+    // const before = await this.workPostRepository
+    //   .createQueryBuilder()
+    //   .where('createdAt = (select max(createdAt) from work_post)')
+    //   .getMany();
+
     const createdAt = new Date();
+
     await this.workPostRepository.save(
       data.map((val) => ({ ...val, createdAt })),
     );

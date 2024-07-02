@@ -46,10 +46,24 @@ export class FcmService {
   }
 
   async sendPost(post: Post) {
-    // this.httpService.get()
-  }
+    const users = await this.httpService.axiosRef.get<string[]>(
+      `http://localhost:8727/search/user?title=${post.title}&description=${post.description}`,
+    );
 
-  async sendWorkPost(workPost: WorkPost) {
-    //
+    const tokens = (await this.userService.finds(users.data)).map(
+      (user) => user.fcmToken,
+    );
+
+    const payload = {
+      tokens,
+      notification: {
+        title: `새 게시물을 확인해보세요!`,
+        body: `${post.title}`,
+      },
+      data: {
+        body: `${post.title}`,
+      },
+    };
+    return await admin.messaging().sendEachForMulticast(payload);
   }
 }

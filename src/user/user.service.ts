@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { HttpService } from '@nestjs/axios';
 
 @Injectable()
@@ -24,6 +24,10 @@ export class UserService {
       tags: [],
     });
     return this.userRepository.save(user);
+  }
+
+  finds(users: string[]) {
+    return this.userRepository.find({ where: { id: In(users) } });
   }
 
   findAll() {

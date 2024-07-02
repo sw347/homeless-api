@@ -31,6 +31,11 @@ class UpsertUser(InsertReq):
     user_id: str
 
 
+class GetUserByPost(BaseModel):
+    title: str
+    description: str
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -100,17 +105,15 @@ async def upsert_user(body: UpsertUser):
 
 
 @app.get("/search/user")
-async def search_users_by_post(post_id: str) -> list[str]:
+async def search_users_by_post(title: str, description: str) -> list[str]:
     try:
-        post = es.get(index="posts", id=post_id)
-        post_vector = post['_source']['vector']
-
+        vector = model.encode(title + " " + description).tolist()
         script_query = {
             "script_score": {
                 "query": {"match_all": {}},
                 "script": {
                     "source": "cosineSimilarity(params.query_vector, 'vector') + 1.0",
-                    "params": {"query_vector": post_vector}
+                    "params": {"query_vector": vector}
                 }
             }
         }
